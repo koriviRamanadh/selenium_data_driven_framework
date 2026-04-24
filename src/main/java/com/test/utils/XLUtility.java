@@ -10,7 +10,7 @@ import org.apache.poi.xssf.usermodel.*;
 
 /*
 author: korivi ramanadh
-date : 27-03-2026
+date : 24-04-2026
 Building an excel utility code
 */
 
@@ -26,9 +26,6 @@ Building an excel utility code
 
  write operations
  mostly required in some of the cases so that the cells are updated some values for example if the result of the test case in case it is passed it must be updated right 
-
- formatting operations
- adding the colours and all others things for now we are keeping these things aside we will add it in the future just not now
 
 */
 
@@ -102,23 +99,39 @@ public class XLUtility {
         return data;
     }
 
-    //Writing operations
-    public void setCellData(XSSFWorkbook book, int rowIndex, int colIndex, String sheetName, String msg) throws FileNotFoundException, IOException{
-        XSSFSheet sheet = book.getSheet(sheetName);
-        XSSFRow row = sheet.getRow(rowIndex);
-        XSSFCell cell = row.getCell(colIndex);
+    // //Writing operations
+    // // public void setCellData(XSSFWorkbook book, int rowIndex, int colIndex, String sheetName, String msg) throws FileNotFoundException, IOException{
+    // //     XSSFSheet sheet = book.getSheet(sheetName);
+    // //     XSSFRow row = sheet.getRow(rowIndex);
+    // //     XSSFCell cell = row.getCell(colIndex);
 
-        if(msg.equals("passed")){
-            cell.setCellValue(msg);
-           try(FileOutputStream fout = new FileOutputStream(filePath)){
-             book.write(fout);
-           }
-        }else{
-            cell.setCellValue(msg);
-            try(FileOutputStream fout = new FileOutputStream(filePath)){
-             book.write(fout);
-           }
-        }
-    }
+    // //     if(msg.equals("passed")){
+    // //         cell.setCellValue(msg);
+    // //        try(FileOutputStream fout = new FileOutputStream(filePath)){
+    // //          book.write(fout);
+    // //        }
+    // //     }else{
+    // //         cell.setCellValue(msg);
+    // //         try(FileOutputStream fout = new FileOutputStream(filePath)){
+    // //          book.write(fout);
+    // //        }
+    // //     }
+    // // }
+
+    // public void setCellData(XSSFWorkbook book, int rowIndex, int colIndex, String sheetName, String msg) throws FileNotFoundException, IOException {
+    //     XSSFSheet sheet = book.getSheet(sheetName);
+    //     XSSFRow row = sheet.getRow(rowIndex);
+
+    //     // null checks
+    //     if(row == null) row = sheet.createRow(rowIndex);
+        
+    //     XSSFCell cell = row.getCell(colIndex);
+    //     if(cell == null) cell = row.createCell(colIndex); // ✅ create if empty
+
+    //     cell.setCellValue(msg);
+    //     try(FileOutputStream fout = new FileOutputStream(filePath)){
+    //         book.write(fout);
+    //     }
+    // }
   
 }

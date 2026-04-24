@@ -43,4 +43,8 @@ public class ConfigReader {
     public static int getPageLoadTimeouts(){
         return Integer.parseInt(getProperty("pageLoadTimeout"));
     }
+
+    public static String getURL(){
+        return properties.getProperty("url");
+    }
 }
