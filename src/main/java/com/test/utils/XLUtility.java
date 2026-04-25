@@ -8,26 +8,6 @@ import java.io.IOException;
 
 import org.apache.poi.xssf.usermodel.*;
 
-/*
-author: korivi ramanadh
-date : 24-04-2026
-Building an excel utility code
-*/
-
-/*
- The idea is to create a excel uitily class that is a central excel codes that are reusable in every other codes 
- so the is to create function that can help us in the reading writing formatting updating the following i am thinking as
-
- first would be file accessing 
- i.e, opening and closing a workbook that is often needed to be done so that no leakage of the system resourse
-
- second read operations
- these are the primary operations across all like getiing the cell and row counts and then the data in the cell like those things
-
- write operations
- mostly required in some of the cases so that the cells are updated some values for example if the result of the test case in case it is passed it must be updated right 
-
-*/
 
 public class XLUtility {
 
@@ -43,10 +23,10 @@ public class XLUtility {
         return file;
     }
 
-    // private FileOutputStream openFileOutput()throws FileNotFoundException{
-    //     FileOutputStream file = new FileOutputStream(filePath);
-    //     return file;
-    // }
+    private FileOutputStream openFileOutput()throws FileNotFoundException{
+         FileOutputStream file = new FileOutputStream(filePath);
+         return file;
+    }
 
     private void closeFile(FileInputStream file , XSSFWorkbook book)throws IOException{
         file.close();
@@ -99,39 +79,27 @@ public class XLUtility {
         return data;
     }
 
-    // //Writing operations
-    // // public void setCellData(XSSFWorkbook book, int rowIndex, int colIndex, String sheetName, String msg) throws FileNotFoundException, IOException{
-    // //     XSSFSheet sheet = book.getSheet(sheetName);
-    // //     XSSFRow row = sheet.getRow(rowIndex);
-    // //     XSSFCell cell = row.getCell(colIndex);
+    //Writing Operations
+    public void  setCellData(String msg, int rowNum , int colNum, String sheetName)throws FileNotFoundException, IOException{
+        FileInputStream file = openFileInput();
+        XSSFWorkbook wb = new XSSFWorkbook(file);
+        XSSFSheet sheet = wb.getSheet(sheetName);
+        XSSFRow row = sheet.getRow(rowNum);
+        if(row == null){
+            row = sheet.createRow(rowNum);
+        }
+        XSSFCell cell = row.getCell(colNum);
+        if(cell == null){
+            cell = row.createCell(colNum);
+        }
 
-    // //     if(msg.equals("passed")){
-    // //         cell.setCellValue(msg);
-    // //        try(FileOutputStream fout = new FileOutputStream(filePath)){
-    // //          book.write(fout);
-    // //        }
-    // //     }else{
-    // //         cell.setCellValue(msg);
-    // //         try(FileOutputStream fout = new FileOutputStream(filePath)){
-    // //          book.write(fout);
-    // //        }
-    // //     }
-    // // }
-
-    // public void setCellData(XSSFWorkbook book, int rowIndex, int colIndex, String sheetName, String msg) throws FileNotFoundException, IOException {
-    //     XSSFSheet sheet = book.getSheet(sheetName);
-    //     XSSFRow row = sheet.getRow(rowIndex);
-
-    //     // null checks
-    //     if(row == null) row = sheet.createRow(rowIndex);
-        
-    //     XSSFCell cell = row.getCell(colIndex);
-    //     if(cell == null) cell = row.createCell(colIndex); // ✅ create if empty
-
-    //     cell.setCellValue(msg);
-    //     try(FileOutputStream fout = new FileOutputStream(filePath)){
-    //         book.write(fout);
-    //     }
-    // }
+        if(msg instanceof String){
+            cell.setCellValue((String)msg);
+        }
+        FileOutputStream fout = openFileOutput();
+        wb.write(fout);
+        fout.close();
+        closeFile(file, wb);
+    }
   
 }

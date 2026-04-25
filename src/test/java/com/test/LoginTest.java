@@ -13,13 +13,21 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
+    
+    static int invocation  = 0;
 
     @Test(dataProvider = "LoginData")
     public void loginTest(String user, String pass) throws FileNotFoundException, IOException{
         LoginPage login = new LoginPage();
         Assert.assertEquals(login.getPageTitle(),"Swag Labs","The login title page should be of ");
         login.loginWithCredentials(user, pass);
-        Assert.assertEquals(login.getPageTitle(),"Swag Labs","The login title page should be of ");
+        if(login.getCurrentUrl().contains("inventory")){
+            invocation++;
+            setData("Pass", invocation, 2, "sheet2");
+        }else{
+            invocation++;
+            setData("fail",invocation,2,"sheet2");
+        }
     }
 
     @DataProvider(name = "LoginData")// remember the DataProvider will always choose to give only two dimensional data only 
@@ -39,25 +47,9 @@ public class LoginTest extends BaseTest {
         return data;
     }
 
-    // public void setData(String msg, int rowIndex, int colIndex, String sheetName)throws FileNotFoundException, IOException{
-    //     String path = ConfigReader.getFilePath();
-    //     XLUtility excelFile = new XLUtility(path);
-    //     XSSFWorkbook book =  excelFile.getWorkbook();
-    //     excelFile.setCellData(book, rowIndex, colIndex, sheetName, msg);
-    //     book.close();
-    // }
-
-    // public int getRowIndex(String user)throws FileNotFoundException, IOException{
-    //     String path = ConfigReader.getFilePath();
-    //     XLUtility excelFile = new XLUtility(path);
-    //     int rows = excelFile.getRowsCount("sheet2");
-
-    //     for(int i = 1; i< rows; i++){
-    //         if(excelFile.getCellData("sheet2", i,0).equals(user)){
-    //             return i;
-    //         }
-    //     }
-    //     return -1;
-    // }
+    public void setData(String msg, int rowNUm, int colNum, String sheetName)throws FileNotFoundException, IOException{
+        XLUtility excel = new XLUtility(ConfigReader.getFilePath());
+        excel.setCellData(msg, rowNUm, colNum, sheetName);
+    }
     
 }
